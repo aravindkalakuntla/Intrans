@@ -1,0 +1,8 @@
+create external table weather2020(
+ time string, drct bigint, dwpc double, gid bigint, pcpn double, ptype bigint, 
+roadtmpc double, smps double, snwd double, srad double,tmpc double, vsby double, wawa string, time_cst string) 
+PARTITIONED BY (month int, day int)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+STORED AS INPUTFORMAT 'org.apache.hadoop.mapred.TextInputFormat'
+OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION '/reactor/weather_clean/year=2020/';
