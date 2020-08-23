@@ -1,0 +1,47 @@
+CREATE EXTERNAL TABLE IF NOT EXISTS snowplow_lrs(
+PingID bigint,
+Longitude decimal(10,8),
+Latitude decimal(10,8),
+Altitude bigint,
+TruckID varchar(10),
+PingDateTime Timestamp,
+ReceiveDateTime Timestamp,
+Heading smallint,
+Velocity smallint,
+RoadTemp smallint,
+AirTemp smallint,
+SolidMaterial smallint,
+AntiIceMaterial smallint,
+PrewetMaterial smallint,
+SolidRate smallint,
+AntiIceRate smallint,
+PrewetRate smallint,
+LeftWingPlowState smallint,
+RightWingPlowState smallint,
+FrontPlowState smallint,
+UnderbellyPlowState smallint,
+SolidRunTotal int,
+AntiIceRunTotal int,
+PrewetRunTotal int,
+SolidSetRate smallint,
+AntiIceSetRate smallint,
+PrewetSetRate smallint,
+BlastMode smallint,
+EngineHours int,
+Odometer int,
+routeId varchar(15),
+measure decimal(20,16),	
+LOGDT_LOCAL bigint,
+END_LABEL varchar(10),
+END_LATI decimal(10,8),
+END_LONG decimal(10,8),
+END_DT bigint,
+END_ROUTEID varchar(15),
+END_MEASURE decimal(20,16),
+route_correction int)
+PARTITIONED BY (year int, month int, day int)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+STORED AS INPUTFORMAT 'org.apache.hadoop.mapred.TextInputFormat'
+OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+  LOCATION '/reactor/snowplow/'
+tblproperties ("skip.header.line.count"="1");
