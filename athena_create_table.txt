@@ -1,0 +1,197 @@
+Database : inrix
+
+CREATE EXTERNAL TABLE IF NOT EXISTS inrix2020(
+  code bigint,
+  `c-value` string,
+  segmentclosed string,
+  score bigint,
+  speed bigint,
+  average bigint,
+  reference bigint,
+  traveltimeminutes double,
+  centraltime string,
+  time string)
+partitioned by (month int,day int)
+ROW FORMAT DELIMITED
+      FIELDS TERMINATED BY ','
+      LINES TERMINATED BY '\n'
+LOCATION 's3://intrans-feed/inrix/year=2020'
+
+Database : wavetronix
+
+CREATE EXTERNAL TABLE `wavetronix2020`(
+  `owner-id` string,
+  `network-id` string,
+  `local-date` string,
+  `local-time` bigint,
+  `utc-offset` bigint,
+  `start-time` bigint,
+  `end-time` bigint,
+  `detector-id` string,
+  `status` string,
+  `lane-id` bigint,
+  `lane-count` bigint,
+  `lane-volume` string,
+  `lane-occupancy` bigint,
+  `lane-speed` bigint,
+  `small-class-count` bigint,
+  `small-class-volume` bigint,
+  `medium-class-count` string,
+  `medium-class-volume` string,
+  `large-class-count` string,
+  `large-class-volume` string)
+partitioned by (month int,day int)
+ROW FORMAT DELIMITED
+  FIELDS TERMINATED BY ','
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.mapred.TextInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION 's3://intrans-feed/wavetronix/year=2020/'
+;
+
+database : workzone
+
+create external table workzone.dailyperf(
+  `date` date,
+  `Direction_Name` string,
+  Direction int,
+  `Time_Weighted_Queue_Length` double,
+  `number_of_events` int,
+  `number_of_daytime_events` int,
+  `average_duration_of_each_event` double,
+  `median_duration_of_each_event` double,
+  `max_duration_of_each_event` doube,
+  `average_queue_length` double,
+  `average_maximum_queue_length_of_each_event` double,
+  `median_maximum_queue_length_of_each_event`	double,
+  `max_maximum_queue_length_of_each_event` double,
+  `percentage_of_queue_greater_than_1_mile` double,
+  `amount_of_traffic_that_encounters_a_queue` double,
+  `total_traffic` double,
+  `percentage_of_traffic_that_encounters_a_queue` double,
+  `percentage_of_time_that_encounters_a_queue` double,
+  `total_delay` double,
+  `average_delay_per_vehicle` double,
+  `maximum_delay` double,
+  `total_delay_when_queue_is_present` double,
+  `percentage_of_delay_caused_by_queue` double,
+  `avg_delay_when_queue_is_present` double,
+  `percentile_95_of_delay_for_all_times(min)` double,
+  `percentile_95_of_delay_when_there_is_queue(min)` double,
+  `Total_Time_with_Queue` double,
+  `Maximum_Delay_for_an_Event` double,
+  `Maximum_Total_Delay_per_minute` double,
+  `Day_number` int,
+  `Average_delay` double)
+  ROW FORMAT DELIMITED
+  FIELDS TERMINATED BY ','
+LOCATION 's3://intrans-csv/TCP_Work_Zone_Performance/dailyperf/'
+;
+
+CREATE EXTERNAL TABLE weeklyperf(
+  `Direction_Name` string,
+  `number_of_days` int,
+  `total_traffic` double,
+  `am_vph` double,
+  `pm_vph` double,
+  `total_delay` double,
+  `Maximum_Total_Delay_per_minute` double,
+  `percentile_95_of_delay_for_all_times(min)` double,
+  `maximum_delay` double,
+  `Average_delay` double,
+  `peak_start` string,
+  `peak_hr_vol` double,
+  `number_of_daytime_events` int,
+  `number_of_days_when_events_happened` int,
+  `total_delay_when_queue_is_present` double,
+  `Maximum_Delay_for_an_Event` double,
+  `number_of_events` int,
+  `amount_of_traffic_that_encounters_a_queue` double,
+  `Total_Time_with_Queue` double,
+  `average_duration_of_each_event` double,
+  `median_duration_of_each_event` double,
+  `max_duration_of_each_event` double,
+  `Time_Weighted_Queue_Length` double,
+  `max_maximum_queue_length_of_each_event` double,
+  `average_maximum_queue_length_of_each_event` double,
+  `median_maximum_queue_length_of_each_event` double,
+  `percentage_of_queue_greater_than_1_mile` double,
+  `percentile_95_of_delay_when_there_is_queue(min)` double,
+  `avg_delay_when_queue_is_present` double,
+  `percentage_of_traffic_that_encounters_a_queue` double,
+  `average_queue_length` double,
+  `percentage_of_time_that_encounters_a_queue` double,
+  `total_delay_per_day` double,
+  `average_delay_per_vehicle` double,
+  `percentage_of_delay_caused_by_queue` double,
+  `direction` int,
+  `date` String)
+  ROW FORMAT DELIMITED
+  FIELDS TERMINATED BY ','
+LOCATION 's3://intrans-csv/TCP_Work_Zone_Performance/weeklyperf/'
+;
+
+database: lcpt 
+
+CREATE EXTERNAL TABLE `lcpt`(
+  station string,
+  direction string,
+  day string,
+  hour int,
+  lanes int,
+  volume double,
+  pceavg double,
+  truckPercent double,
+  pceMin double,
+  pceMax double,
+  pce25	double,
+  pce75	double,
+  pceMedian	double,
+  cscoreStd	double,
+  cscoreAvg double,
+  date_lcpt int,
+  daily_records double,
+  total_month_records int,
+  perTotalMissing double,
+  month int,
+  year int,
+  detectorid string)
+ROW FORMAT DELIMITED
+  FIELDS TERMINATED BY ','
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.mapred.TextInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION 's3://intrans-csv/TCP_Work_Zone_Performance/LCPT/'
+tblproperties ("skip.header.line.count"="1")
+;
+
+
+CREATE EXTERNAL TABLE `lcpt_json`(
+  station string,
+  direction string,
+  day string,
+  hour int,
+  lanes int,
+  volume double,
+  pceavg double,
+  truckPercent double,
+  pceMin double,
+  pceMax double,
+  pce25	double,
+  pce75	double,
+  pceMedian	double,
+  cscoreStd	double,
+  cscoreAvg double,
+  date_lcpt int,
+  daily_records double,
+  total_month_records int,
+  perTotalMissing double,
+  month int,
+  year int,
+  detectorid string)
+ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
+WITH SERDEPROPERTIES ( 'ignore.malformed.json' = 'true')
+LOCATION 's3://intrans-csv/TCP_Work_Zone_Performance/LCPT/'
+;
