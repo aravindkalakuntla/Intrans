@@ -1,0 +1,43 @@
+sudo yum update
+
+wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u141-b15/336fa29ff2bb4ef291e347e091f7f4a7/jdk-8u141-linux-x64.rpm
+
+sudo yum install -y jdk-8u141-linux-x64.rpm
+
+sudo update-alternatives --config java
+
+sudo wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
+
+sudo sed -i s/\$releasever/6/g /etc/yum.repos.d/epel-apache-maven.repo
+
+sudo yum install -y apache-maven
+
+mvn --version
+
+sudo vi /etc/yum.repos.d/mongodb-org-3.0.repo
+
+[mongodb-org-3.0]
+name=MongoDB Repository
+baseurl=https://repo.mongodb.org/yum/amazon/2013.03/mongodb-org/3.0/x86_64/
+gpgcheck=0
+enabled=1
+
+sudo yum install -y mongodb-org
+
+sudo service mongod start
+
+sudo chkconfig mongod on
+
+wget http://apache.spinellicreations.com/tomcat/tomcat-8/v8.5.56/bin/apache-tomcat-8.5.56.tar.gz
+
+tar zxpvf apache-tomcat-8.5.56.tar.gz
+
+Navigate to bin folder and run startup.sh
+
+mongod --fork --dbpath /data/mongo/mongo/ --logpath /var/log/mongodb/mongod.log
+
+sudo kill $(sudo lsof -t -i:27017)
+
+lsblk, mount /dev/xvdf /mnt, 
+
+mvn clean install -DskipTests
